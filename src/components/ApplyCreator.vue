@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { withBase } from '~/utils/url'
+
 interface SocialMedia {
   id: SocialMapKey
   name: string
@@ -6,41 +8,41 @@ interface SocialMedia {
   value?: string
 }
 
-interface FormData {
-  url: string
-  username: string
-  aboutMe: string
-  avatar: string
-  background?: string
-  socials: Required<SocialMedia>[]
-  tags: string[]
-}
+// interface FormData {
+//   url: string
+//   username: string
+//   aboutMe: string
+//   avatar: string
+//   background?: string
+//   socials: Required<SocialMedia>[]
+//   tags: string[]
+// }
 
 const socialMap = {
   instagram: {
     id: 'instagram',
     name: 'Instagram',
-    logo: '/logos/instagram.svg',
+    logo: withBase('/logos/instagram.svg'),
   },
   tiktok: {
     id: 'tiktok',
     name: 'TikTok',
-    logo: '/logos/tiktok.svg',
+    logo: withBase('/logos/tiktok.svg'),
   },
   youtube: {
     id: 'youtube',
     name: 'YouTube',
-    logo: '/logos/youtube.svg',
+    logo: withBase('/logos/youtube.svg'),
   },
   x: {
     id: 'x',
     name: 'X',
-    logo: '/logos/x.svg',
+    logo: withBase('/logos/x.svg'),
   },
   link: {
     id: 'link',
     name: 'Link',
-    logo: '/logos/link.svg',
+    logo: withBase('/logos/link.svg'),
   },
 } as const
 type SocialMapKey = keyof typeof socialMap
@@ -54,7 +56,6 @@ const background = ref<string | null>(null)
 const socials = ref<Required<SocialMedia>[]>([])
 const tags = ref<string[]>([])
 
-
 // 最大 about me 长度
 const maxAboutMeLength = 500
 
@@ -63,7 +64,7 @@ function handleAvatarUpload(event: Event) {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (file) {
-     avatar.value = URL.createObjectURL(file)
+    avatar.value = URL.createObjectURL(file)
   }
 }
 
@@ -91,15 +92,14 @@ function addSocialMedia(id: SocialMapKey) {
 }
 
 // 确认社交媒体链接
-function confirmSocialMedia(id: SocialMapKey) {
+function confirmSocialMedia(_id: SocialMapKey) {
   // todo
 }
 
 // 删除社交媒体
-function deleteSocialMedia(id: SocialMapKey) {
+function deleteSocialMedia(_id: SocialMapKey) {
   // todo
 }
-
 </script>
 
 <template>
@@ -113,14 +113,14 @@ function deleteSocialMedia(id: SocialMapKey) {
       <div class="form-item">
         <label class="form-label">Choose your URL:</label>
         <div class="url-input-wrapper">
-          <input v-model="profileUrl" placeholder="Closr.so/" class="url-input" />
+          <input v-model="profileUrl" placeholder="Closr.so/" class="url-input">
         </div>
       </div>
 
       <!-- 2. Username -->
       <div class="form-item">
         <label class="form-label">Username:</label>
-        <input v-model="username" placeholder="Please Enter" class="form-input" />
+        <input v-model="username" placeholder="Please Enter" class="form-input">
       </div>
 
       <!-- 3. Profile Background -->
@@ -148,7 +148,7 @@ function deleteSocialMedia(id: SocialMapKey) {
       <div class="form-item">
         <label class="form-label">About me:</label>
         <div class="about-me-section">
-          <textarea placeholder="Please Enter"  />
+          <textarea placeholder="Please Enter" />
           <div class="about-me-length">
             {{ aboutMe.length }} / {{ maxAboutMeLength }}
           </div>
@@ -160,26 +160,32 @@ function deleteSocialMedia(id: SocialMapKey) {
         <label class="form-label">Social Media:</label>
         <div class="social-media-section">
           <div class="social-icons-row">
-            <div v-for="social in socialList" :key="social.id" class="social-icon-wrapper"
-              @click="addSocialMedia(social.id )">
+            <div
+              v-for="social in socialList" :key="social.id" class="social-icon-wrapper"
+              @click="addSocialMedia(social.id)"
+            >
               <img :src="social.logo" alt="Social Icon" class="social-svg-icon">
             </div>
           </div>
 
           <!-- 社交媒体输入区域 -->
           <div class="social-inputs">
-            <div v-for="social in socials" :key="social.id"
-              class="social-input-item">
+            <div
+              v-for="social in socials" :key="social.id"
+              class="social-input-item"
+            >
               <div class="social-input-header">
                 <span class="social-name">{{ social.name }}</span>
-                <el-button type="danger" size="small" text class="delete-btn"
-                  @click="deleteSocialMedia(social.id )">
+                <el-button
+                  type="danger" size="small" text class="delete-btn"
+                  @click="deleteSocialMedia(social.id)"
+                >
                   🗑️
                 </el-button>
               </div>
               <div v-if="!social.value" class="social-input-content">
                 <el-input v-model="social.value" placeholder="Please enter the link" class="social-url-input" />
-                <el-button type="primary" size="small" class="confirm-btn" @click="confirmSocialMedia(social.id )">
+                <el-button type="primary" size="small" class="confirm-btn" @click="confirmSocialMedia(social.id)">
                   Confirm
                 </el-button>
                 <div v-if="!social.value" class="error-message">
@@ -270,8 +276,8 @@ function deleteSocialMedia(id: SocialMapKey) {
 
     input::placeholder,
     textarea::placeholder {
-        color: #bfbfbf;
-      }
+      color: #bfbfbf;
+    }
 
     .upload-section {
       display: flex;
@@ -306,7 +312,6 @@ function deleteSocialMedia(id: SocialMapKey) {
     }
 
     .about-me-section {
-
       padding: 13px;
       height: fit-content;
 

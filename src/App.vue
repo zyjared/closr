@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { Props as TheTopbarProps } from '~/components/TheTopbar.vue'
+import { withBase } from './utils/url'
 
 const user = ref<TheTopbarProps['user']>({
   username: 'John Doe',
-  avatar: '/avatar.png',
+  avatar: withBase('/avatar.png'),
   id: '1234567890',
   isVerified: false,
 })

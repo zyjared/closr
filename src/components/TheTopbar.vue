@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { User as IconUser } from '@element-plus/icons-vue'
-
 interface User {
   username?: string
   avatar?: string
