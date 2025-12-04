@@ -74,6 +74,9 @@ catalogs:
       specifier: ^2.2.10
       version: 2.2.10
   frontend:
+    '@element-plus/icons-vue':
+      specifier: ^2.3.2
+      version: 2.3.2
     '@vueuse/core':
       specifier: ^13.3.0
       version: 13.3.0
@@ -96,7 +99,7 @@ importers:
   .:
     dependencies:
       '@element-plus/icons-vue':
-        specifier: ^2.3.2
+        specifier: catalog:frontend
         version: 2.3.2(vue@3.5.16(typescript@5.8.3))
       '@vueuse/core':
         specifier: catalog:frontend
