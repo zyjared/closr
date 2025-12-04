@@ -38,7 +38,7 @@ const user = ref<TheTopbarProps['user']>({
       margin-right: 16px;
       border-radius: 16px;
       background: #fafafa;
-      padding: 28px 0;
+      padding: 28px 16px;
       min-height: calc(100vh - 74px - 16px);
       box-sizing: border-box;
     }

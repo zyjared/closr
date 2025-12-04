@@ -1,12 +1,6 @@
 <script setup lang="ts">
+import type { Social } from './SocialList.vue'
 import { withBase } from '~/utils/url'
-
-interface SocialMedia {
-  id: SocialMapKey
-  name: string
-  logo: string
-  value?: string
-}
 
 // interface FormData {
 //   url: string
@@ -18,42 +12,19 @@ interface SocialMedia {
 //   tags: string[]
 // }
 
-const socialMap = {
-  instagram: {
-    id: 'instagram',
-    name: 'Instagram',
-    logo: withBase('/logos/instagram.svg'),
-  },
-  tiktok: {
-    id: 'tiktok',
-    name: 'TikTok',
-    logo: withBase('/logos/tiktok.svg'),
-  },
-  youtube: {
-    id: 'youtube',
-    name: 'YouTube',
-    logo: withBase('/logos/youtube.svg'),
-  },
-  x: {
-    id: 'x',
-    name: 'X',
-    logo: withBase('/logos/x.svg'),
-  },
-  link: {
-    id: 'link',
-    name: 'Link',
-    logo: withBase('/logos/link.svg'),
-  },
-} as const
-type SocialMapKey = keyof typeof socialMap
-const socialList = Object.values(socialMap)
-
 const username = ref('')
 const aboutMe = ref('')
 const profileUrl = ref('')
 const avatar = ref<string | null>(null)
 const background = ref<string | null>(null)
-const socials = ref<Required<SocialMedia>[]>([])
+const socials = ref<Required<Social>[]>([
+  {
+    id: 'instagram',
+    name: 'Instagram',
+    logo: withBase('/logos/instagram.svg'),
+    value: 'https://www.instagram.com',
+  },
+])
 const tags = ref<string[]>([])
 
 // 最大 about me 长度
@@ -75,30 +46,6 @@ function handleBackgroundUpload(event: Event) {
   if (file) {
     background.value = URL.createObjectURL(file)
   }
-}
-
-// 添加社交媒体
-function addSocialMedia(id: SocialMapKey) {
-  if (!socials.value) {
-    socials.value = []
-  }
-
-  socials.value.push({
-    id,
-    name: socialMap[id].name,
-    logo: socialMap[id].logo,
-    value: '',
-  })
-}
-
-// 确认社交媒体链接
-function confirmSocialMedia(_id: SocialMapKey) {
-  // todo
-}
-
-// 删除社交媒体
-function deleteSocialMedia(_id: SocialMapKey) {
-  // todo
 }
 </script>
 
@@ -159,45 +106,7 @@ function deleteSocialMedia(_id: SocialMapKey) {
       <div class="form-item">
         <label class="form-label">Social Media:</label>
         <div class="social-media-section">
-          <div class="social-icons-row">
-            <div
-              v-for="social in socialList" :key="social.id" class="social-icon-wrapper"
-              @click="addSocialMedia(social.id)"
-            >
-              <img :src="social.logo" alt="Social Icon" class="social-svg-icon">
-            </div>
-          </div>
-
-          <!-- 社交媒体输入区域 -->
-          <div class="social-inputs">
-            <div
-              v-for="social in socials" :key="social.id"
-              class="social-input-item"
-            >
-              <div class="social-input-header">
-                <span class="social-name">{{ social.name }}</span>
-                <el-button
-                  type="danger" size="small" text class="delete-btn"
-                  @click="deleteSocialMedia(social.id)"
-                >
-                  🗑️
-                </el-button>
-              </div>
-              <div v-if="!social.value" class="social-input-content">
-                <el-input v-model="social.value" placeholder="Please enter the link" class="social-url-input" />
-                <el-button type="primary" size="small" class="confirm-btn" @click="confirmSocialMedia(social.id)">
-                  Confirm
-                </el-button>
-                <div v-if="!social.value" class="error-message">
-                  <span class="error-icon">✕</span>
-                  This URL isn't available. Please try another.
-                </div>
-              </div>
-              <div v-else-if="social.value" class="social-bound-url">
-                {{ social.value }}
-              </div>
-            </div>
-          </div>
+          <SocialList v-model="socials" />
         </div>
       </div>
 
@@ -294,6 +203,7 @@ function deleteSocialMedia(_id: SocialMapKey) {
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
 
         input {
           position: absolute;
@@ -303,6 +213,12 @@ function deleteSocialMedia(_id: SocialMapKey) {
           width: 100%;
           height: 100%;
           cursor: pointer;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
       }
 
@@ -342,6 +258,12 @@ function deleteSocialMedia(_id: SocialMapKey) {
         display: flex;
         gap: 12px;
         margin-bottom: 20px;
+      }
+
+      .social-logo {
+        width: 44px;
+        height: 44px;
+        cursor: pointer;
       }
     }
   }

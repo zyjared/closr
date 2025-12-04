@@ -1,5 +1,7 @@
 # closr
 
+可以直接访问该 [链接](https://zyjared.github.io/closr/) 查看页面。
+
 ## 克隆项目
 
 ```bash
