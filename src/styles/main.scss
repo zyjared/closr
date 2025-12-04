@@ -1,0 +1,23 @@
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #1f1f1f;
+}
+
+/* html.dark {
+  color-scheme: dark;
+} */
+body {
+  letter-spacing: 0;
+  font-family: Gotham, sans-serif;
+}
+
+.zicon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
