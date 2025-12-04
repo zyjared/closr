@@ -18,7 +18,7 @@ export default defineConfig({
     },
   },
   server: {
-    open: false
+    // open: false
   },
   plugins: [
     // https://github.com/posva/unplugin-vue-router
