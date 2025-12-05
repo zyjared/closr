@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { FormData as ApplyCreatorFormData } from '~/components/ApplyCreator.vue'
+import type { FormData as CreatorApplyFormData } from '~/components/CreatorApply.vue'
 import { withBase } from '~/utils/url'
 
-const formData = ref<ApplyCreatorFormData>({
+const formData = reactive<CreatorApplyFormData>({
   url: '',
   username: '',
   aboutMe: '',
@@ -25,13 +25,24 @@ watch(formData, (data) => {
 
 <template>
   <div class="container">
-    <ApplyCreator v-model="formData" class="apply-creator" />
-
-    <div class="" />
+    <CreatorApply v-model="formData" class="apply" />
+    <CreatorPreview :profile="formData" class="preview" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.apply-creator {
+.container {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+
+  .apply {
+    flex: 1;
+    max-width: 665px;
+  }
+
+  .preview {
+    width: 393px;
+  }
 }
 </style>

@@ -165,11 +165,12 @@ function handleAboutMeInput(event: Event) {
 }
 
 .container {
-  width: 665px;
+  // width: 665px;
   padding: 20px;
   border-radius: 20px;
   background: #fff;
   box-sizing: border-box;
+  @include flex-col;
 }
 
 .header {
@@ -190,9 +191,9 @@ function handleAboutMeInput(event: Event) {
     @include flex-col;
     gap: 12px;
 
-    .label {
+    label {
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.35;
       letter-spacing: 0;
       color: #1f1f1f;

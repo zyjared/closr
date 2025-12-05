@@ -9,6 +9,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ApplyCreator: typeof import('./src/components/ApplyCreator.vue')['default']
+    CreatorApply: typeof import('./src/components/CreatorApply.vue')['default']
+    CreatorPreview: typeof import('./src/components/CreatorPreview.vue')['default']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBreadcrumb: typeof import('element-plus/es')['ElBreadcrumb']
     ElBreadcrumbItem: typeof import('element-plus/es')['ElBreadcrumbItem']

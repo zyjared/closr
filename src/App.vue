@@ -28,14 +28,17 @@ const user = ref<TheTopbarProps['user']>({
 <style lang="scss" scoped>
 .container {
   position: relative;
+  display: flex;
 
   .sidebar {
-    position: absolute;
+    position: sticky;
+    top: 0;
     height: 100%;
   }
 
   .right {
-    margin-left: 240px;
+    // margin-left: 240px;
+    flex: 1;
 
     .content {
       margin-right: 16px;

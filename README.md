@@ -1,6 +1,6 @@
 # closr
 
-可以直接访问该 [链接](https://zyjared.github.io/closr/) 查看页面。
+可以直接访问该 [链接](https://zyjared.github.io/closr/) 查看效果。
 
 ## 克隆项目
 
@@ -24,3 +24,7 @@ npm 可以执行：
 npm install
 npm run dev
 ```
+
+## 注意
+
+未做小屏适配，最小尺寸限制在了 `1024px`。
