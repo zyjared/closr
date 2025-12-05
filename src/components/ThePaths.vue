@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const route = useRoute()
 
-// manager-my-page/become-a-creator
-// -> [Manager My Page Become A Creator]
-
-function formateName(name: string) {
+/**
+ * become-a-creator
+ * -> Become A Creator
+ */
+function formatName(name: string) {
   return name.split('-')
     .map(n => n.charAt(0).toUpperCase() + n.slice(1))
     .join(' ')
@@ -14,7 +15,7 @@ const paths = computed(() => {
   return route.path
     .split('/')
     .filter(Boolean)
-    .map(p => formateName(p))
+    .map(formatName)
 })
 </script>
 
@@ -28,8 +29,14 @@ const paths = computed(() => {
 
 <style lang="scss" scoped>
 .el-breadcrumb {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0;
+  &__inner {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  :deep(.el-breadcrumb__item:last-of-type .el-breadcrumb__inner) {
+    font-weight: 700 !important;
+  }
 }
 </style>
