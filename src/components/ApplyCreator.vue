@@ -58,7 +58,7 @@ function handleBackgroundUpload(event: Event) {
     <div class="form">
       <!-- 1. Choose your URL -->
       <div class="form-item">
-        <label class="form-label">Choose your URL:</label>
+        <label class="form-label">Choose your URL</label>
         <div class="url-input-wrapper">
           <input v-model="profileUrl" placeholder="Closr.so/" class="url-input">
         </div>
@@ -66,13 +66,13 @@ function handleBackgroundUpload(event: Event) {
 
       <!-- 2. Username -->
       <div class="form-item">
-        <label class="form-label">Username:</label>
+        <label class="form-label">Username</label>
         <input v-model="username" placeholder="Please Enter" class="form-input">
       </div>
 
       <!-- 3. Profile Background -->
       <div class="form-item">
-        <label class="form-label">Profile Background:</label>
+        <label class="form-label">Profile Background</label>
         <div class="upload-section">
           <div class="upload-box">
             <input type="file" accept="image/*" class="file-input" @change="handleAvatarUpload">
@@ -93,7 +93,7 @@ function handleBackgroundUpload(event: Event) {
 
       <!-- 4. About me -->
       <div class="form-item">
-        <label class="form-label">About me:</label>
+        <label class="form-label">About me</label>
         <div class="about-me-section">
           <textarea placeholder="Please Enter" />
           <div class="about-me-length">
@@ -104,7 +104,7 @@ function handleBackgroundUpload(event: Event) {
 
       <!-- 5. Social Media -->
       <div class="form-item">
-        <label class="form-label">Social Media:</label>
+        <label class="form-label">Social Media</label>
         <div class="social-media-section">
           <SocialList v-model="socials" />
         </div>
@@ -112,7 +112,7 @@ function handleBackgroundUpload(event: Event) {
 
       <!-- 6. Tags -->
       <div class="form-item">
-        <label class="form-label">Tags:</label>
+        <label class="form-label">Tags</label>
         <div class="tags-section">
           <el-tag v-for="tag in tags" :key="tag" class="tag-item">
             {{ tag }}
@@ -154,6 +154,9 @@ function handleBackgroundUpload(event: Event) {
 .form {
   @include flex-col;
   gap: 20px;
+
+  // 左侧进度计数器
+  counter-reset: form-item;
 
   .form-item {
     @include flex-col;
@@ -265,6 +268,44 @@ function handleBackgroundUpload(event: Event) {
         height: 44px;
         cursor: pointer;
       }
+    }
+
+    // 左侧进度
+    position: relative;
+    counter-increment: form-item;
+    padding-left: 40px; // 序号宽 + 间距 16px
+
+    &::before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      content: counter(form-item);
+      display: inline-block;
+      margin-right: 12px;
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      text-align: center;
+      background: #fafafa;
+      border-radius: 50%;
+      border: 1px solid #979797;
+      box-sizing: border-box;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      // 100% - 序号高 28px - 间距 20px - 优化 2px
+      // 优化 2px ，使得上下多偏移 1px
+      height: calc(100% - 10px);
+      left: 14px;
+      top: 29px;
+      width: 1px;
+      border-left: 1px dashed #eaeaea;
+    }
+
+    &:nth-last-child(2)::after {
+      display: none;
     }
   }
 }
