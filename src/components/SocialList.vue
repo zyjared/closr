@@ -105,7 +105,9 @@ function editSocial(index: number, value: string) {
     <!-- 已选的 social -->
     <div class="selected-socials">
       <div v-for="(social, idx) in selectedSocials" :key="social.id" class="selected-item">
-        <img :src="social.logo" alt="Social Logo" class="logo">
+        <div class="logo">
+          <img :src="social.logo" alt="Social Logo" class="logo__img">
+        </div>
         <input
           v-model="social.value"
           type="text"
@@ -144,7 +146,7 @@ function editSocial(index: number, value: string) {
 .social-logos {
   @include flex-row;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
 .social-logo {
@@ -190,6 +192,14 @@ function editSocial(index: number, value: string) {
       height: 42px;
       border-radius: 12px;
       background: #fafafa;
+      padding: 2px;
+      box-sizing: border-box;
+
+      &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
 
     .actions {
@@ -224,6 +234,7 @@ function editSocial(index: number, value: string) {
 
       .invalid {
         color: #a6a6a6;
+        cursor: not-allowed;
       }
     }
   }

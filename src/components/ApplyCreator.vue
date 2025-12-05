@@ -27,6 +27,14 @@ const socials = ref<Required<Social>[]>([
 ])
 const tags = ref<string[]>([])
 
+const presetTags = [
+  '🤖 Health maintenance',
+  '🍚 Food travel',
+  '🎯 Art design',
+  '🏀 Sport',
+  '🎹 Travel',
+]
+
 // 最大 about me 长度
 const maxAboutMeLength = 500
 
@@ -45,6 +53,16 @@ function handleBackgroundUpload(event: Event) {
   const file = target.files?.[0]
   if (file) {
     background.value = URL.createObjectURL(file)
+  }
+}
+
+// 操作 tag 选中状态
+function toggleTag(tag: string) {
+  if (tags.value.includes(tag)) {
+    tags.value = tags.value.filter(t => t !== tag)
+  }
+  else {
+    tags.value.push(tag)
   }
 }
 </script>
@@ -114,17 +132,24 @@ function handleBackgroundUpload(event: Event) {
       <div class="form-item">
         <label class="form-label">Tags</label>
         <div class="tags-section">
-          <el-tag v-for="tag in tags" :key="tag" class="tag-item">
+          <span
+            v-for="tag in presetTags"
+            :key="tag"
+            class="tag"
+            type="info"
+            :class="{ active: tags.includes(tag) }"
+            @click="toggleTag(tag)"
+          >
             {{ tag }}
-          </el-tag>
+          </span>
         </div>
       </div>
 
       <!-- Continue Button -->
       <div class="form-actions">
-        <el-button type="primary" size="large" class="continue-btn">
+        <button class="continue">
           Continue
-        </el-button>
+        </button>
       </div>
     </div>
   </div>
@@ -134,6 +159,11 @@ function handleBackgroundUpload(event: Event) {
 @mixin flex-col {
   display: flex;
   flex-direction: column;
+}
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
 .container {
@@ -256,17 +286,24 @@ function handleBackgroundUpload(event: Event) {
       }
     }
 
-    .social-media-section {
-      .social-icons-row {
-        display: flex;
-        gap: 12px;
-        margin-bottom: 20px;
-      }
+    .tags-section {
+      @include flex-row;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 14px;
 
-      .social-logo {
-        width: 44px;
-        height: 44px;
+      .tag {
+        display: block;
         cursor: pointer;
+        padding: 12px;
+        border-radius: 12px;
+        background: #fafafa;
+        border: 1px solid transparent;
+        box-sizing: border-box;
+
+        &.active {
+          border: 1px solid #1f1f1f;
+        }
       }
     }
 
@@ -306,6 +343,22 @@ function handleBackgroundUpload(event: Event) {
 
     &:nth-last-child(2)::after {
       display: none;
+    }
+  }
+
+  .form-actions {
+    padding-left: 40px;
+
+    .continue {
+      height: 42px;
+      padding: 12px 48px;
+      font-size: 14px;
+      background-color: #3478ff;
+      color: #fff;
+      border-radius: 52px;
+      outline: none;
+      border: none;
+      cursor: pointer;
     }
   }
 }
