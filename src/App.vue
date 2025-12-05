@@ -2,6 +2,9 @@
 import type { Props as TheTopbarProps } from '~/components/TheTopbar.vue'
 import { withBase } from './utils/url'
 
+// 方便函数式调用
+import 'element-plus/dist/index.css'
+
 const user = ref<TheTopbarProps['user']>({
   username: 'John Doe',
   avatar: withBase('/avatar.png'),

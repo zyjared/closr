@@ -1,31 +1,20 @@
 <script setup lang="ts">
 import type { Social } from './SocialList.vue'
-import { withBase } from '~/utils/url'
+import { ElMessage } from 'element-plus'
 
-// interface FormData {
-//   url: string
-//   username: string
-//   aboutMe: string
-//   avatar: string
-//   background?: string
-//   socials: Required<SocialMedia>[]
-//   tags: string[]
-// }
+export interface FormData {
+  url: string
+  username: string
+  aboutMe: string
+  avatar: string
+  background: string
+  socials: Required<Social>[]
+  tags: string[]
+}
 
-const username = ref('')
-const aboutMe = ref('')
-const profileUrl = ref('')
-const avatar = ref<string | null>(null)
-const background = ref<string | null>(null)
-const socials = ref<Required<Social>[]>([
-  {
-    id: 'instagram',
-    name: 'Instagram',
-    logo: withBase('/logos/instagram.svg'),
-    value: 'https://www.instagram.com',
-  },
-])
-const tags = ref<string[]>([])
+const formData = defineModel<FormData>({
+  required: true,
+})
 
 const presetTags = [
   '🤖 Health maintenance',
@@ -43,7 +32,7 @@ function handleAvatarUpload(event: Event) {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (file) {
-    avatar.value = URL.createObjectURL(file)
+    formData.value.avatar = URL.createObjectURL(file)
   }
 }
 
@@ -52,18 +41,27 @@ function handleBackgroundUpload(event: Event) {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (file) {
-    background.value = URL.createObjectURL(file)
+    formData.value.background = URL.createObjectURL(file)
   }
 }
 
 // 操作 tag 选中状态
 function toggleTag(tag: string) {
-  if (tags.value.includes(tag)) {
-    tags.value = tags.value.filter(t => t !== tag)
+  if (formData.value.tags.includes(tag)) {
+    formData.value.tags = formData.value.tags.filter(t => t !== tag)
   }
   else {
-    tags.value.push(tag)
+    formData.value.tags.push(tag)
   }
+}
+
+function handleAboutMeInput(event: Event) {
+  const target = event.target as HTMLTextAreaElement
+  if (target.value.length > maxAboutMeLength) {
+    ElMessage.error(`About me length should be less than ${maxAboutMeLength}`)
+    return
+  }
+  formData.value.aboutMe = target.value
 }
 </script>
 
@@ -78,14 +76,14 @@ function toggleTag(tag: string) {
       <div class="form-item">
         <label class="form-label">Choose your URL</label>
         <div class="url-input-wrapper">
-          <input v-model="profileUrl" placeholder="Closr.so/" class="url-input">
+          <input v-model="formData.url" placeholder="Closr.so/" class="url-input">
         </div>
       </div>
 
       <!-- 2. Username -->
       <div class="form-item">
         <label class="form-label">Username</label>
-        <input v-model="username" placeholder="Please Enter" class="form-input">
+        <input v-model="formData.username" placeholder="Please Enter" class="form-input">
       </div>
 
       <!-- 3. Profile Background -->
@@ -95,15 +93,15 @@ function toggleTag(tag: string) {
           <div class="upload-box">
             <input type="file" accept="image/*" class="file-input" @change="handleAvatarUpload">
             <div class="upload-placeholder">
-              <IconPlus v-if="!avatar" class="zicon" />
-              <img v-else :src="avatar" alt="Avatar" class="upload-preview">
+              <IconPlus v-if="!formData.avatar" class="zicon" />
+              <img v-else :src="formData.avatar" alt="Avatar" class="upload-preview">
             </div>
           </div>
           <div class="upload-box">
             <input type="file" accept="image/*" class="file-input" @change="handleBackgroundUpload">
             <div class="upload-placeholder">
-              <IconPlus v-if="!background" class="zicon" />
-              <img v-else :src="background" alt="Background" class="upload-preview">
+              <IconPlus v-if="!formData.background" class="zicon" />
+              <img v-else :src="formData.background" alt="Background" class="upload-preview">
             </div>
           </div>
         </div>
@@ -113,9 +111,9 @@ function toggleTag(tag: string) {
       <div class="form-item">
         <label class="form-label">About me</label>
         <div class="about-me-section">
-          <textarea placeholder="Please Enter" />
+          <textarea placeholder="Please Enter" @input="handleAboutMeInput" />
           <div class="about-me-length">
-            {{ aboutMe.length }} / {{ maxAboutMeLength }}
+            {{ formData.aboutMe.length }} / {{ maxAboutMeLength }}
           </div>
         </div>
       </div>
@@ -124,7 +122,7 @@ function toggleTag(tag: string) {
       <div class="form-item">
         <label class="form-label">Social Media</label>
         <div class="social-media-section">
-          <SocialList v-model="socials" />
+          <SocialList v-model="formData.socials" />
         </div>
       </div>
 
@@ -137,7 +135,7 @@ function toggleTag(tag: string) {
             :key="tag"
             class="tag"
             type="info"
-            :class="{ active: tags.includes(tag) }"
+            :class="{ active: formData.tags.includes(tag) }"
             @click="toggleTag(tag)"
           >
             {{ tag }}

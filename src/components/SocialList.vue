@@ -40,13 +40,13 @@ const socialMap = {
 type SocialId = keyof typeof socialMap
 const logos = Object.values(socialMap)
 
-// todo: 已经确定的才更新 data
 interface SelectedSocial extends Required<Social> {
   // 原始值，提交时存储
   raw: string
 }
+
 const selectedSocials = ref<SelectedSocial[]>([])
-watch(data, (items) => {
+watchOnce(data, (items) => {
   if (items) {
     selectedSocials.value = items.map(item => ({
       ...socialMap[item.id],
@@ -55,6 +55,14 @@ watch(data, (items) => {
     }))
   }
 }, { immediate: true })
+
+// 同步到 data
+function syncToData() {
+  data.value = selectedSocials.value.map((item) => {
+    const { raw, ...rest } = item
+    return raw === rest.value ? rest : null
+  }).filter(Boolean) as Social[]
+}
 
 function addSocial(id: SocialId) {
   selectedSocials.value.push({
@@ -78,6 +86,7 @@ function confirmSocial(index: number) {
 
   const item = selectedSocials.value[index]
   item.raw = item.value
+  syncToData()
 }
 
 function removeSocial(id: SocialId) {
@@ -85,6 +94,7 @@ function removeSocial(id: SocialId) {
   if (index !== -1) {
     selectedSocials.value.splice(index, 1)
   }
+  syncToData()
 }
 
 function editSocial(index: number, value: string) {
